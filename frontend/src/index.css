@@ -1,0 +1,17 @@
+@import "tailwindcss";
+
+/* Font (if using Overpass, be sure to include it in your HTML or import) */
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Overpass", system-ui, Avenir, Helvetica, Arial, sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
+/* Typography */
+h1 {
+  font-size: 3.2em;
+  line-height: 1.1;
+}
