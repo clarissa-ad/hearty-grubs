@@ -1,5 +1,5 @@
 [
-  {
+    {
     "id": 1,
     "title": "Chicken Teriyaki",
     "image": "recipe_photo_1.png",
@@ -7,43 +7,44 @@
     "category": "Chicken",
     "cooktime": 25,
     "portions": 3,
+    "dishtype": ["Breakfast", "Lunch", "Dinner"],
     "description": "Chicken Teriyaki is a savory-sweet Japanese-inspired dish made with tender chicken glazed in a rich teriyaki sauce. It's quick to make and pairs perfectly with steamed rice and veggies. This flavorful recipe is a favorite for both lunch and dinner.",
     "directions": [
-      "Cut the chicken into bite-sized pieces.",
-      "Mix soy sauce and sugar in a bowl.",
-      "Cook chicken in a pan until browned.",
-      "Add sauce and simmer until thickened.",
-      "Serve with steamed rice and vegetables."
+        "Cut the chicken into bite-sized pieces.",
+        "Mix soy sauce and sugar in a bowl.",
+        "Cook chicken in a pan until browned.",
+        "Add sauce and simmer until thickened.",
+        "Serve with steamed rice and vegetables."
     ],
     "reviews": [
-      {
+        {
         "user": "Alice",
         "rating": 5,
         "comment": "Delicious and easy to make! My family loved it."
-      },
-      {
+        },
+        {
         "user": "Bob",
         "rating": 4,
         "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
-      },
-      {
+        },
+        {
         "user": "Bob",
         "rating": 4,
         "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
-      },
-      {
+        },
+        {
         "user": "Bob",
         "rating": 4,
         "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
-      },
-      {
+        },
+        {
         "user": "Bob",
         "rating": 4,
         "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
-      }
+        }
     ]
-  },
-  {
+    },
+    {
     "id": 2,
     "title": "Beef Soup",
     "image": "recipe_photo_1.png",
@@ -51,23 +52,24 @@
     "category": "Beef",
     "cooktime": 25,
     "portions": 3,
+    "dishtype": ["Lunch", "Dinner", "Vegetarian"],
     "description": "A hearty beef soup perfect for cold days.",
     "directions": [
-      "Cut beef into cubes.",
-      "Boil beef in water until tender.",
-      "Add chopped carrots and potatoes.",
-      "Simmer until vegetables are soft.",
-      "Season to taste and serve hot."
+        "Cut beef into cubes.",
+        "Boil beef in water until tender.",
+        "Add chopped carrots and potatoes.",
+        "Simmer until vegetables are soft.",
+        "Season to taste and serve hot."
     ],
     "reviews": [
-      {
+        {
         "user": "Charlie",
         "rating": 5,
         "comment": "So comforting and filling!"
-      }
+        }
     ]
-  },
-  {
+    },
+    {
     "id": 3,
     "title": "Beef Teriyaki Soup",
     "image": "recipe_photo_1.png",
@@ -75,20 +77,21 @@
     "category": "Beef",
     "cooktime": 25,
     "portions": 3,
+    "dishtype": ["Soup", "Lunch", "Dinner"],
     "description": "A fusion of teriyaki and soup for beef lovers.",
     "directions": [
-      "Prepare beef and vegetables.",
-      "Cook beef in a pot until browned.",
-      "Add vegetables and teriyaki sauce.",
-      "Simmer until everything is tender.",
-      "Serve hot."
+        "Prepare beef and vegetables.",
+        "Cook beef in a pot until browned.",
+        "Add vegetables and teriyaki sauce.",
+        "Simmer until everything is tender.",
+        "Serve hot."
     ],
     "reviews": [
-      {
+        {
         "user": "Dana",
         "rating": 4,
         "comment": "Unique twist! Will make again."
-      }
+        }
     ]
-  }
+    }
 ]
