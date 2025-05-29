@@ -2,7 +2,7 @@
     {
     "id": 1,
     "title": "Chicken Teriyaki",
-    "image": "recipe_photo_1.png",
+    "image": "./src/assets/recipe_photo_1.png",
     "ingredients": ["chicken", "soy sauce", "sugar"],
     "category": "Chicken",
     "cooktime": 25,
@@ -47,7 +47,7 @@
     {
     "id": 2,
     "title": "Beef Soup",
-    "image": "recipe_photo_1.png",
+    "image": "./src/assets/recipe_photo_1.png",
     "ingredients": ["beef", "carrot", "potato"],
     "category": "Beef",
     "cooktime": 25,
@@ -72,7 +72,7 @@
     {
     "id": 3,
     "title": "Beef Teriyaki Soup",
-    "image": "recipe_photo_1.png",
+    "image": "./src/assets/recipe_photo_1.png",
     "ingredients": ["beef", "carrot", "potato"],
     "category": "Beef",
     "cooktime": 25,
@@ -91,6 +91,176 @@
         "user": "Dana",
         "rating": 4,
         "comment": "Unique twist! Will make again."
+        }
+    ]
+    },
+    {
+    "id": 4,
+    "title": "Vegan Teriyaki Soup",
+    "image": "./src/assets/recipe_photo_1.png",
+    "ingredients": ["beef", "carrot", "potato"],
+    "category": "Vegan",
+    "cooktime": 25,
+    "portions": 3,
+    "dishtype": ["Soup", "Lunch", "Dinner", "Vegetarian"],
+    "description": "A fusion of teriyaki and soup for beef lovers.",
+    "directions": [
+        "Prepare vegan beef and vegetables.",
+        "Cook vegan beef in a pot until browned.",
+        "Add vegetables and teriyaki sauce.",
+        "Simmer until everything is tender.",
+        "Serve hot."
+    ],
+    "reviews": [
+        {
+        "user": "Dana",
+        "rating": 4,
+        "comment": "Unique twist! Will make again."
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        }
+    ]
+    },
+    {
+    "id": 4,
+    "title": "Breakfast Teriyaki Soup",
+    "image": "./src/assets/recipe_photo_1.png",
+    "ingredients": ["beef", "carrot", "potato"],
+    "category": "Beef",
+    "cooktime": 25,
+    "portions": 3,
+    "dishtype": ["Soup", "Lunch", "Dinner", "Vegetarian"],
+    "description": "A fusion of teriyaki and soup for beef lovers.",
+    "directions": [
+        "Prepare vegan beef and vegetables.",
+        "Cook vegan beef in a pot until browned.",
+        "Add vegetables and teriyaki sauce.",
+        "Simmer until everything is tender.",
+        "Serve hot."
+    ],
+    "reviews": [
+        {
+        "user": "Dana",
+        "rating": 4,
+        "comment": "Unique twist! Will make again."
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+        },
+        {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
         }
     ]
     }
