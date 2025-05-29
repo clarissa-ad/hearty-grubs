@@ -39,6 +39,7 @@ export const HomeNSearch = () => {
       </div>
 
       <div className="px-6 py-10 max-w-6xl mx-auto">
+        <h2 className="text-4xl font-black mb-4 text-left">Recipes by Ingredients</h2>
         <RecipeList recipes={filteredRecipes} />
       </div>
     </>

@@ -5,7 +5,8 @@
     "image": "recipe_photo_1.png",
     "ingredients": ["chicken", "soy sauce", "sugar"],
     "category": "Chicken",
-    "cook-time": 25,
+    "cooktime": 25,
+    "portions": 3,
     "description": "Chicken Teriyaki is a savory-sweet Japanese-inspired dish made with tender chicken glazed in a rich teriyaki sauce. It's quick to make and pairs perfectly with steamed rice and veggies. This flavorful recipe is a favorite for both lunch and dinner.",
     "directions": [
       "Cut the chicken into bite-sized pieces.",
@@ -23,7 +24,22 @@
       {
         "user": "Bob",
         "rating": 4,
-        "comment": "Great flavor, but I added some ginger for extra kick."
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+      },
+      {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+      },
+      {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
+      },
+      {
+        "user": "Bob",
+        "rating": 4,
+        "comment": "So easy and super tasty! I made this after uni and dinner was ready in exactly 25 minutes! The sauce is perfectly balanced — not too salty, not too sweet. Definitely making it again!"
       }
     ]
   },
@@ -33,7 +49,8 @@
     "image": "recipe_photo_1.png",
     "ingredients": ["beef", "carrot", "potato"],
     "category": "Beef",
-    "cook-time": 25,
+    "cooktime": 25,
+    "portions": 3,
     "description": "A hearty beef soup perfect for cold days.",
     "directions": [
       "Cut beef into cubes.",
@@ -56,7 +73,8 @@
     "image": "recipe_photo_1.png",
     "ingredients": ["beef", "carrot", "potato"],
     "category": "Beef",
-    "cook-time": 25,
+    "cooktime": 25,
+    "portions": 3,
     "description": "A fusion of teriyaki and soup for beef lovers.",
     "directions": [
       "Prepare beef and vegetables.",

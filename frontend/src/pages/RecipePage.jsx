@@ -8,6 +8,9 @@ export default function RecipePage() {
 
     if (!recipe) return <p>Recipe not found</p>;
 
+    const totalRating = recipe.reviews.reduce((sum, r) => sum + r.rating, 0);
+    const averageRating = (totalRating / recipe.reviews.length).toFixed(1);
+
     return (
         <div>
         <Link to="/">
@@ -28,12 +31,18 @@ export default function RecipePage() {
                     {/* TO ADD: Favourite Icon */}
                 </div>
 
-                <div className="flex items-center justify-center text-center gap-20 mb-2">
-                    <span className="text-xl font-bold">
-                        {recipe.time} Mins
+                <div className="text-xl font-bold flex items-center justify-center text-center gap-20 mb-2">
+                    <span>
+                        {recipe.cooktime} Mins
                     </span>
-                    <span className="text-xl font-bold">
-                        {recipe.rating} ★
+                    <span>
+                        {recipe.portions} Servings
+                        {/* <img src="../assets/icons/Portions.svg"
+                        alt="portions icon"> 
+                        <img>*/}
+                    </span>
+                    <span>
+                        {averageRating} ★
                         {/* TO ADD: STARS ICON */}
                     </span>
                 </div>
@@ -45,24 +54,26 @@ export default function RecipePage() {
                 {/* Reviews */}
                 <div className="mt-6">
                     <div className="flex items-end justify-between mb-2">
-                        <h2 className="text-xl font-bold">Reviews</h2>
-                        <a href="#" className="text-[12px] hover:underline">
+                        <h2 className="text-xl font-bold">
+                            Reviews ({recipe.reviews.length})
+                        </h2>
+                        <Link to={`/recipe/${recipe.id}/reviews`} className="text-[12px] hover:underline">
                             See more
-                        </a>
+                        </Link>
                     </div>
                 
                     <div className="flex flex-col md:flex-row gap-4">
-                        {recipe.reviews.map((review, idx) => (
-                            <div key={idx} className="bg-[#E85F5C] text-white rounded-lg p-4 flex-1 shadow">
-                            <div className="flex justify-between items-center gap-2 mb-1">
-                                <span className="font-bold">{review.user}</span>
-                                <span className="font-semibold text-s">
-                                {review.rating} ★
-                                </span>
-                            </div>
-                            <p className="text-sm text-left">{review.comment}</p>
-                            </div>
-                        ))}
+                    {recipe.reviews.slice(0, 2).map((review, idx) => (
+                        <div key={idx} className="bg-[#E85F5C] text-white rounded-lg p-4 flex-1 shadow">
+                        <div className="flex justify-between items-center gap-2 mb-1">
+                            <span className="font-bold">{review.user}</span>
+                            <span className="font-semibold text-s">
+                            {review.rating} ★
+                            </span>
+                        </div>
+                        <p className="text-sm text-left">{review.comment}</p>
+                        </div>
+                    ))}
                     </div>
                 </div>
 
