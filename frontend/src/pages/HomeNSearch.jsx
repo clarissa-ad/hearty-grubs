@@ -9,9 +9,13 @@ export const HomeNSearch = () => {
   const [view, setView] = useState(""); // "" means default/category view
 
   useEffect(() => {
-    fetch("/src/assets/recipes.json")
-      .then((res) => res.json())
-      .then(setRecipes);
+    fetch("/hearty-grubs/recipes.json") // changed this path to fetch from public root
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to load recipes");
+        return res.json();
+      })
+      .then(setRecipes)
+      .catch((err) => console.error(err));
   }, []);
 
   // Filter recipes by search term on ingredients

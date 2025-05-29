@@ -1,15 +1,39 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import recipes from "../assets/recipes.json";
 
 export default function RecipePage() {
     const { id } = useParams();
-    const recipe = recipes.find((r) => r.id === parseInt(id));
+    const [recipe, setRecipe] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
+    useEffect(() => {
+    fetch("/hearty-grubs/recipes.json") // fetch from public folder root
+        .then((res) => {
+        if (!res.ok) throw new Error("Failed to load recipes");
+        return res.json();
+        })
+        .then((data) => {
+        const found = data.find((r) => r.id.toString() === id);
+        setRecipe(found);
+        setLoading(false);
+        })
+        .catch((err) => {
+        setError(err.message);
+        setLoading(false);
+        });
+    }, [id]);
+
+    if (loading) return <p>Loading recipe...</p>;
+    if (error) return <p>Error: {error}</p>;
     if (!recipe) return <p>Recipe not found</p>;
 
-    const totalRating = recipe.reviews.reduce((sum, r) => sum + r.rating, 0);
-    const averageRating = (totalRating / recipe.reviews.length).toFixed(1);
+    const averageRating = recipe.reviews.length
+    ? (
+        recipe.reviews.reduce((sum, r) => sum + r.rating, 0) /
+        recipe.reviews.length
+        ).toFixed(1)
+    : "N/A";
 
     return (
         <div>
