@@ -99,7 +99,7 @@
     "title": "Vegan Teriyaki Soup",
     "image": "./src/assets/recipe_photo_1.png",
     "ingredients": ["beef", "carrot", "potato"],
-    "category": "Vegan",
+    "category": "Beef",
     "cooktime": 25,
     "portions": 3,
     "dishtype": ["Soup", "Lunch", "Dinner", "Vegetarian"],
@@ -181,7 +181,7 @@
     },
     {
     "id": 4,
-    "title": "Breakfast Teriyaki Soup",
+    "title": "Vegan Teriyaki Soup",
     "image": "./src/assets/recipe_photo_1.png",
     "ingredients": ["beef", "carrot", "potato"],
     "category": "Beef",
