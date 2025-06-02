@@ -8,19 +8,22 @@ export default function RecipePage() {
     const [error, setError] = useState(null);
 
     useEffect(() => {
-    fetch("/hearty-grubs/recipes.json") // fetch from public folder root
+    fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
         .then((res) => {
-        if (!res.ok) throw new Error("Failed to load recipes");
-        return res.json();
+            if (!res.ok) throw new Error("Failed to load recipes");
+            return res.json();
         })
         .then((data) => {
-        const found = data.find((r) => r.id.toString() === id);
-        setRecipe(found);
-        setLoading(false);
+            if (data.meals && data.meals.length > 0) {
+                setRecipe(data.meals[0]);
+            } else {
+                setRecipe(null);
+            }
+            setLoading(false);
         })
         .catch((err) => {
-        setError(err.message);
-        setLoading(false);
+            setError(err.message);
+            setLoading(false);
         });
     }, [id]);
 
@@ -28,12 +31,27 @@ export default function RecipePage() {
     if (error) return <p>Error: {error}</p>;
     if (!recipe) return <p>Recipe not found</p>;
 
-    const averageRating = recipe.reviews.length
-    ? (
-        recipe.reviews.reduce((sum, r) => sum + r.rating, 0) /
-        recipe.reviews.length
-        ).toFixed(1)
-    : "N/A";
+    // INI NUNGGU REVIEW YAH (jangan dihapus ok gusy)
+    // const averageRating = recipe.reviews.length
+    // ? (
+    //     recipe.reviews.reduce((sum, r) => sum + r.rating, 0) /
+    //     recipe.reviews.length
+    //     ).toFixed(1)
+    // : "N/A";
+
+    // Extract ingredients and measures
+    const ingredients = [];
+    for (let i = 1; i <= 20; i++) {
+        const ingredient = recipe[`strIngredient${i}`];
+        const measure = recipe[`strMeasure${i}`];
+        if (ingredient && ingredient.trim()) {
+            ingredients.push(`${ingredient} - ${measure}`);
+        }
+    }
+
+    const directions = recipe.strInstructions
+        ? recipe.strInstructions.split('.').filter(Boolean)
+        : [];
 
     return (
         <div>
@@ -43,43 +61,44 @@ export default function RecipePage() {
 
         <div className="flex flex-col md:flex-row gap-6">
             <img
-                src={recipe.image}
-                alt={recipe.title}
+                src={recipe.strMealThumb}
+                alt={recipe.strMeal}
                 className="w-full md:w-100 h-full object-cover rounded-lg shadow self-stretch"
             />
             <div className="flex-1">
                 <div>
-                    <h1 className="text-2xl font-[1000]">
-                        {recipe.title}
-                    </h1>
+                    <h1 className="text-2xl font-[1000]">{recipe.strMeal}</h1>
                     {/* TO ADD: Favourite Icon */}
                 </div>
 
+                {/* INI AKU COMMENT SOALNYA TheMealDB gak ada cooktime, portions */}
                 <div className="text-xl font-bold flex items-center justify-center text-center gap-20 mb-2">
                     <span>
-                        {recipe.cooktime} Mins
+                        {/* {recipe.cooktime} Mins */}
                     </span>
                     <span>
-                        {recipe.portions} Servings
+                        {/* {recipe.portions} Servings */}
                         {/* <img src="../assets/icons/Portions.svg"
                         alt="portions icon"> 
                         <img>*/}
                     </span>
                     <span>
-                        {averageRating} ★
+                        {/* {averageRating} ★ */}
                         {/* TO ADD: STARS ICON */}
                     </span>
                 </div>
-
+                
+                {/* INI JUGAAA, TheMealDB gak ada desc (i need your opinions on these problems) */}
                 <p className="text-left text-l mb-4">
-                    {recipe.description}
+                    {/* {recipe.description} */}
                 </p>
 
+                {/* BAGIAN INI NANTI TUNGGU PUNYA DIRAAAA SOALNYA BUTUH JSON REVIEW KAYAKNYA SIE*/}
                 {/* Reviews */}
-                <div className="mt-6">
+                {/*<div className="mt-6">
                     <div className="flex items-end justify-between mb-2">
                         <h2 className="text-xl font-bold">
-                            Reviews ({recipe.reviews.length})
+                            Reviews {/*({recipe.reviews.length})}
                         </h2>
                         <Link to={`/recipe/${recipe.id}/reviews`} className="text-[12px] hover:underline">
                             See more
@@ -99,7 +118,7 @@ export default function RecipePage() {
                         </div>
                     ))}
                     </div>
-                </div>
+                </div> */}
 
             </div>
         </div>
@@ -110,7 +129,7 @@ export default function RecipePage() {
             <div className="w-full md:w-100 border-4 border-[#A2D883] rounded-lg p-4 text-left">
                 <h3 className="text-3xl font-bold mb-2">Ingredients</h3>
                 <ul className="text-gray-800 text-base list-disc list-inside text-left">
-                {recipe.ingredients.map((item, idx) => (
+                {ingredients.map((item, idx) => (
                     <li key={idx}>{item}</li>
                 ))}
                 </ul>
@@ -120,10 +139,10 @@ export default function RecipePage() {
             <div className="md:w-2/3">
             <h3 className="text-3xl font-bold mb-2 text-left">Directions</h3>
             <ol className="list-inside text-base text-left">
-                {recipe.directions.map((step, idx) => (
+                {directions.map((step, idx) => (
                 <li key={idx} className="mb-2">
-                    <span className="font-semibold text-xl">Step {idx + 1}: </span> 
-                    {step}
+                    {/* <span className="font-semibold text-xl">Step {idx + 1}: </span>  */}
+                    {step.trim()}
                 </li>
                 ))}
             </ol>

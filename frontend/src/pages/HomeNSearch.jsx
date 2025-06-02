@@ -7,23 +7,40 @@ export const HomeNSearch = () => {
   const [recipes, setRecipes] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [view, setView] = useState(""); // "" means default/category view
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetch("/hearty-grubs/recipes.json") // changed this path to fetch from public root
-      .then((res) => {
-        if (!res.ok) throw new Error("Failed to load recipes");
-        return res.json();
+    setLoading(true);
+    if(searchTerm.trim() === "") {
+      Promise.all([
+        fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Chicken").then((res) => res.json()),
+        fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef").then((res => res.json()))
+      ])
+        .then(([chickenData, beefData]) => {
+          const chickenMeals = (chickenData.meals || []).slice(0, 6).map(meal => ({...meal, strCategory: "Chicken"}));
+          const beefMeals = (beefData.meals || []).slice(0, 6).map(meal => ({...meal, strCategory: "Beef"}));
+          setRecipes([...chickenMeals, ...beefMeals]);
+          setLoading(false);
       })
-      .then(setRecipes)
-      .catch((err) => console.error(err));
-  }, []);
+      .catch((err) => {
+         console.error(err);
+         setLoading(false);
+      });
+    } else {
+      fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`)
+        .then((res) => res.json())
+        .then((data) => {
+          setRecipes(data.meals || []);
+          setLoading(false);
+        })
+        .catch((err) => {
+          console.error(err);
+          setLoading(false);
+        })
+    }
+  }, [searchTerm]);
 
-  // Filter recipes by search term on ingredients
-  const filteredBySearch = recipes.filter((recipe) =>
-    recipe.ingredients.some((ing) =>
-      ing.toLowerCase().includes(searchTerm.toLowerCase())
-    )
-  );
+  const filteredBySearch = recipes;
 
   // Get displayed recipes based on selected view
   const getDisplayedRecipes = () => {
@@ -50,7 +67,7 @@ export const HomeNSearch = () => {
   const groupedByCategory =
     view === ""
       ? displayedRecipes.reduce((acc, recipe) => {
-          const category = recipe.category || "Uncategorized";
+          const category = recipe.strCategory || "Uncategorized";
           acc[category] = acc[category] || [];
           acc[category].push(recipe);
           return acc;
@@ -96,7 +113,7 @@ export const HomeNSearch = () => {
                 <h3 className="text-2xl font-bold mb-4 text-left">{category}</h3>
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                   {recipes.map((recipe) => (
-                    <RecipeCard key={recipe.id} recipe={recipe} />
+                    <RecipeCard key={recipe.idMeal} recipe={recipe} />
                   ))}
                 </div>
               </div>
