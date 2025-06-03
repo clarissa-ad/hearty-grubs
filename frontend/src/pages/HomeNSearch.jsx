@@ -10,55 +10,75 @@ export const HomeNSearch = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    setLoading(true);
-    if(searchTerm.trim() === "") {
-      Promise.all([
-        fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Chicken").then((res) => res.json()),
-        fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef").then((res => res.json()))
-      ])
-        .then(([chickenData, beefData]) => {
-          const chickenMeals = (chickenData.meals || []).slice(0, 6).map(meal => ({...meal, strCategory: "Chicken"}));
-          const beefMeals = (beefData.meals || []).slice(0, 6).map(meal => ({...meal, strCategory: "Beef"}));
-          setRecipes([...chickenMeals, ...beefMeals]);
-          setLoading(false);
-      })
-      .catch((err) => {
-         console.error(err);
-         setLoading(false);
-      });
+    const fetchDefaultMeals = async () => {
+      try {
+        const [chickenData, beefData] = await Promise.all([
+          fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Chicken").then((res) => res.json()),
+          fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef").then((res) => res.json()),
+        ]);
+
+        const chickenMeals = (chickenData.meals || []).slice(0, 6).map(meal => ({ ...meal, strCategory: "Chicken" }));
+        const beefMeals = (beefData.meals || []).slice(0, 6).map(meal => ({ ...meal, strCategory: "Beef" }));
+        setRecipes([...chickenMeals, ...beefMeals]);
+      } catch (err) {
+        console.error("Failed to load category meals", err);
+      }
+    };
+
+    const fetchSearchMeals = async () => {
+      try {
+        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`);
+        const data = await res.json();
+        setRecipes(data.meals || []);
+      } catch (err) {
+        console.error("Failed to search meals", err);
+      }
+    };
+
+    const fetchRandomMeals = async () => {
+      try {
+        setLoading(true);
+
+        const delay = new Promise((resolve) => setTimeout(resolve, 5000));
+        const uniqueMeals = new Map();
+
+        while (uniqueMeals.size < 9) {
+          const res = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
+          const data = await res.json();
+          const meal = data.meals[0];
+
+          if (!uniqueMeals.has(meal.idMeal)) {
+            uniqueMeals.set(meal.idMeal, meal);
+          }
+        }
+
+        await delay; // ensures consistent UX delay
+        setRecipes(Array.from(uniqueMeals.values()));
+      } catch (err) {
+        console.error("Failed to load random meals", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Now only set loading for 'popular' view
+    if (view === "popular") {
+      fetchRandomMeals();
+    } else if (searchTerm.trim() === "") {
+      fetchDefaultMeals();
     } else {
-      fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`)
-        .then((res) => res.json())
-        .then((data) => {
-          setRecipes(data.meals || []);
-          setLoading(false);
-        })
-        .catch((err) => {
-          console.error(err);
-          setLoading(false);
-        })
+      fetchSearchMeals();
     }
-  }, [searchTerm]);
+  }, [searchTerm, view]);
 
   const filteredBySearch = recipes;
 
   // Get displayed recipes based on selected view
   const getDisplayedRecipes = () => {
-    if (view === "popular") {
-      return [...filteredBySearch].sort((a, b) => {
-        const avgA =
-          a.reviews.reduce((sum, r) => sum + r.rating, 0) / a.reviews.length || 0;
-        const avgB =
-          b.reviews.reduce((sum, r) => sum + r.rating, 0) / b.reviews.length || 0;
-        return avgB - avgA;
-      });
-    }
-
     if (view === "favorites") {
-      return filteredBySearch.filter((r) => r.favorite);
+      return recipes.filter((r) => r.favorite);
     }
-
-    return filteredBySearch; // default/category view
+    return recipes;
   };
 
   const displayedRecipes = getDisplayedRecipes();
@@ -73,6 +93,15 @@ export const HomeNSearch = () => {
           return acc;
         }, {})
       : null;
+  
+  if (loading) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-screen">
+        <img src={Logo} alt="Loading" className="w-1/3 animate-pulse mb-6" />
+        <p className="text-xl text-gray-600">Let him cook...</p>
+      </div>
+    );
+  }
 
   return (
     <>
@@ -83,13 +112,15 @@ export const HomeNSearch = () => {
       <div className="flex justify-center space-x-10 mt-6 text-md font-medium">
         <button
           onClick={() => setView("popular")}
-          className={`hover:underline ${view === "popular" ? "font-bold" : ""}`}
+          disabled={loading}
+          className={`hover:underline ${view === "popular" ? "font-bold" : ""} ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           Most Popular
         </button>
         <button
           onClick={() => setView("favorites")}
-          className={`hover:underline ${view === "favorites" ? "font-bold" : ""}`}
+          disabled={loading}
+          className={`hover:underline ${view === "favorites" ? "font-bold" : ""} ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
         >
           Favorites
         </button>
