@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { SearchBar } from "../components/SearchBar";
 import RecipeCard from "../components/RecipeCard";
 import Logo from "../assets/Logo.svg";
+import { Link } from "react-router-dom";
 
 export const HomeNSearch = () => {
   const [recipes, setRecipes] = useState([]);
@@ -98,14 +99,26 @@ export const HomeNSearch = () => {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
         <img src={Logo} alt="Loading" className="w-1/3 animate-pulse mb-6" />
-        <p className="text-xl text-gray-600">Let him cook...</p>
       </div>
     );
   }
 
   return (
     <>
-      <img src={Logo} alt="Food" className="w-2/3 mx-auto mt-10" />
+      <div className="flex space-x-8" style={{position: "absolute", top: 105, right: 50}}>
+        <Link to="/register" className="hover:underline font-semibold">
+          Register
+        </Link>
+        <Link to="/login" className="hover:underline font-semibold">
+          Log in
+        </Link>
+      </div>
+
+      <div className="w-full max-w-6xl mx-auto mt-10 mb-4 flex justify-center">
+        <Link to="/" onClick={() => setView("")}>
+          <img src={Logo} alt="Food" className="w-2/3 mx-auto mt-10 cursor-pointer" />
+        </Link>
+      </div>
 
       <SearchBar value={searchTerm} onChange={setSearchTerm} />
 
