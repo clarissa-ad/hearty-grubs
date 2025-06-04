@@ -1,6 +1,6 @@
 .register-root {
   display: flex;
-  min-height: 100vh;
+  height: 100vh;
   font-family: 'Inter', Arial, sans-serif;
   background: #fff;
   width: 100%
@@ -69,6 +69,7 @@
   padding: 40px 32px 0 32px;
   border-radius: 0 40px 40px 0;
   position: relative;
+  height: 100vh;
 }
 
 .register-logo {
@@ -81,7 +82,7 @@
   font-size: 2.2rem;
   font-weight: 900;
   margin-bottom: 18px;
-  color: #000;
+  color: #fff;
   text-align: center;
 }
 
