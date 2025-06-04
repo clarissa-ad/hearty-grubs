@@ -1,25 +1,45 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 import Logo from "../assets/Logo.svg";
 
 export default function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleChange(e) {
     setForm({ ...form, [e.target.name]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
-    // Dummy login logic
     if (!form.username || !form.password) {
       setMessage("Please fill in all fields.");
       return;
     }
-    setMessage("Login successful!");
-    setForm({ username: "", password: "" });
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/login", {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(form)
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage(data.message);
+        setForm({ username: "", password: "" });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        setMessage(data.message);
+      }
+    } catch (err) {
+      setMessage("Error logging in. Please try again.");
+    }
+    setLoading(false);
   }
 
   return (

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "./Register.css";
 import Logo from "../assets/Logo.svg";
 
@@ -8,27 +8,45 @@ export default function Register() {
     username: "",
     email: "",
     password: "",
-    confirmPassword: "",
+    confirmPassword: ""
   });
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   function handleChange(e) {
     setForm({ ...form, [e.target.id]: e.target.value });
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
       setMessage("Passwords do not match!");
       return;
     }
-    setMessage(`Registration successful! Welcome, ${form.username}!`);
-    setForm({
-      username: "",
-      email: "",
-      password: "",
-      confirmPassword: "",
-    });
+    setLoading(true);
+    try {
+      const res = await fetch("http://localhost:5000/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(form),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setMessage(data.message);
+        setForm({ username: "", email: "", password: "", confirmPassword: "" });
+        setTimeout(() => {
+          navigate("/");
+        }, 1000);
+      } else {
+        setMessage(data.message);
+      }
+    } catch (err) {
+      setMessage("Error registering. Please try again.");
+    }
+    setLoading(false);
   }
 
   return (
