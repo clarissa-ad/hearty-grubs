@@ -14,7 +14,7 @@ html, body {
 }
 
 .login-left {
-  flex: 1.1;
+  flex: 1;
   background: #fff;
   display: flex;
   flex-direction: column;
@@ -105,7 +105,7 @@ html, body {
 }
 
 .login-right {
-  flex: 1.2;
+  flex: 1;
   background: #e85f5c;
   color: #fff;
   display: flex;
