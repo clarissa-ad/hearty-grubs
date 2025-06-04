@@ -11,6 +11,8 @@ export const HomeNSearch = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    const favoriteIds = JSON.parse(localStorage.getItem("favorites") || "[]");
+
     const fetchDefaultMeals = async () => {
       try {
         const [chickenData, beefData] = await Promise.all([
@@ -18,11 +20,21 @@ export const HomeNSearch = () => {
           fetch("https://www.themealdb.com/api/json/v1/1/filter.php?c=Beef").then((res) => res.json()),
         ]);
 
-        const chickenMeals = (chickenData.meals || []).slice(0, 6).map(meal => ({ ...meal, strCategory: "Chicken" }));
-        const beefMeals = (beefData.meals || []).slice(0, 6).map(meal => ({ ...meal, strCategory: "Beef" }));
-        setRecipes([...chickenMeals, ...beefMeals]);
+        const chickenMeals = (chickenData.meals || [])
+          .slice(0, 6)
+          .map((meal) => ({ ...meal, strCategory: "Chicken" }));
+        const beefMeals = (beefData.meals || [])
+          .slice(0, 6)
+          .map((meal) => ({ ...meal, strCategory: "Beef" }));
+
+        const allMeals = [...chickenMeals, ...beefMeals].map((meal) => ({
+          ...meal,
+          favorite: favoriteIds.includes(meal.idMeal),
+        }));
+
+        setRecipes(allMeals);
       } catch (err) {
-        console.error("Failed to load category meals", err);
+        console.error("Failed to load meals", err);
       }
     };
 
@@ -41,7 +53,6 @@ export const HomeNSearch = () => {
         let ingredientMeals = [];
 
         if (ingData.meals && ingData.meals.length > 0) {
-          // Look up full info for each ingredient-based result
           const detailedMeals = await Promise.all(
             ingData.meals.map((meal) =>
               fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`).then((res) => res.json())
@@ -50,7 +61,6 @@ export const HomeNSearch = () => {
           ingredientMeals = detailedMeals.map((d) => d.meals[0]);
         }
 
-        // Combine both and remove duplicates based on idMeal
         const combined = [...nameMeals, ...ingredientMeals];
         const uniqueMealsMap = new Map();
         combined.forEach((meal) => {
@@ -59,7 +69,12 @@ export const HomeNSearch = () => {
           }
         });
 
-        setRecipes(Array.from(uniqueMealsMap.values()));
+        const finalMeals = Array.from(uniqueMealsMap.values()).map((meal) => ({
+          ...meal,
+          favorite: favoriteIds.includes(meal.idMeal),
+        }));
+
+        setRecipes(finalMeals);
       } catch (err) {
         console.error("Failed to search meals", err);
       }
@@ -68,7 +83,6 @@ export const HomeNSearch = () => {
     const fetchRandomMeals = async () => {
       try {
         setLoading(true);
-
         const delay = new Promise((resolve) => setTimeout(resolve, 5000));
         const uniqueMeals = new Map();
 
@@ -76,24 +90,48 @@ export const HomeNSearch = () => {
           const res = await fetch("https://www.themealdb.com/api/json/v1/1/random.php");
           const data = await res.json();
           const meal = data.meals[0];
-
           if (!uniqueMeals.has(meal.idMeal)) {
             uniqueMeals.set(meal.idMeal, meal);
           }
         }
 
-        await delay; // ensures consistent UX delay
-        setRecipes(Array.from(uniqueMeals.values()));
+        await delay;
+        const finalMeals = Array.from(uniqueMeals.values()).map((meal) => ({
+          ...meal,
+          favorite: favoriteIds.includes(meal.idMeal),
+        }));
+
+        setRecipes(finalMeals);
       } catch (err) {
-        console.error("Failed to load random meals", err);
+        console.error("Failed to load meals", err);
       } finally {
         setLoading(false);
       }
     };
 
-    // Now only set loading for 'popular' view
+    const fetchFavoriteMeals = async () => {
+      try {
+        const results = await Promise.all(
+          favoriteIds.map((id) =>
+            fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`).then((res) => res.json())
+          )
+        );
+
+        const meals = results
+          .map((r) => r.meals && r.meals[0])
+          .filter(Boolean)
+          .map((meal) => ({ ...meal, favorite: true }));
+
+        setRecipes(meals);
+      } catch (err) {
+        console.error("Failed to load favorite meals", err);
+      }
+    };
+
     if (view === "popular") {
       fetchRandomMeals();
+    } else if (view === "favorites") {
+      fetchFavoriteMeals();
     } else if (searchTerm.trim() === "") {
       fetchDefaultMeals();
     } else {
@@ -101,19 +139,8 @@ export const HomeNSearch = () => {
     }
   }, [searchTerm, view]);
 
-  const filteredBySearch = recipes;
+  const displayedRecipes = recipes;
 
-  // Get displayed recipes based on selected view
-  const getDisplayedRecipes = () => {
-    if (view === "favorites") {
-      return recipes.filter((r) => r.favorite);
-    }
-    return recipes;
-  };
-
-  const displayedRecipes = getDisplayedRecipes();
-
-  // Group recipes by category only in default view
   const groupedByCategory =
     view === ""
       ? displayedRecipes.reduce((acc, recipe) => {
@@ -123,7 +150,7 @@ export const HomeNSearch = () => {
           return acc;
         }, {})
       : null;
-  
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-screen">
@@ -134,7 +161,7 @@ export const HomeNSearch = () => {
 
   return (
     <>
-      <div className="flex space-x-8" style={{position: "absolute", top: 105, right: 50}}>
+      <div className="flex space-x-8" style={{ position: "absolute", top: 105, right: 50 }}>
         <Link to="/register" className="hover:underline font-semibold">
           Register
         </Link>
@@ -155,14 +182,18 @@ export const HomeNSearch = () => {
         <button
           onClick={() => setView("popular")}
           disabled={loading}
-          className={`hover:underline ${view === "popular" ? "font-bold" : ""} ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`hover:underline ${view === "popular" ? "font-bold" : ""} ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           Most Popular
         </button>
         <button
           onClick={() => setView("favorites")}
           disabled={loading}
-          className={`hover:underline ${view === "favorites" ? "font-bold" : ""} ${loading ? "opacity-50 cursor-not-allowed" : ""}`}
+          className={`hover:underline ${view === "favorites" ? "font-bold" : ""} ${
+            loading ? "opacity-50 cursor-not-allowed" : ""
+          }`}
         >
           Favorites
         </button>
@@ -197,7 +228,7 @@ export const HomeNSearch = () => {
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             {displayedRecipes.map((recipe) => (
-              <RecipeCard key={recipe.id} recipe={recipe} />
+              <RecipeCard key={recipe.idMeal} recipe={recipe} />
             ))}
           </div>
         )}
