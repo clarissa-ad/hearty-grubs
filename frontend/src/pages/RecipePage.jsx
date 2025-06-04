@@ -6,6 +6,9 @@ export default function RecipePage() {
     const [recipe, setRecipe] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [reviews, setReviews] = useState([]);
+    const [newReview, setNewReview] = useState({user: "", rating: "", rev: ""});
+    const [reviewLoading, setReviewLoading] = useState(false);
 
     useEffect(() => {
     fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${id}`)
@@ -27,17 +30,24 @@ export default function RecipePage() {
         });
     }, [id]);
 
+    useEffect(() => {
+        fetch("http://localhost:5000/reviews")
+            .then(res => res.json())
+            .then(data => setReviews(data))
+            .catch(() => setReviews([]));
+    }, []);
+
     if (loading) return <p>Loading recipe...</p>;
     if (error) return <p>Error: {error}</p>;
     if (!recipe) return <p>Recipe not found</p>;
 
     // INI NUNGGU REVIEW YAH (jangan dihapus ok gusy)
-    // const averageRating = recipe.reviews.length
-    // ? (
-    //     recipe.reviews.reduce((sum, r) => sum + r.rating, 0) /
-    //     recipe.reviews.length
-    //     ).toFixed(1)
-    // : "N/A";
+    const averageRating = reviews.length
+    ? (
+        reviews.reduce((sum, r) => sum + r.rating, 0) /
+        reviews.length
+        ).toFixed(1)
+    : "N/A";
 
     // Extract ingredients and measures
     const ingredients = [];
@@ -52,6 +62,30 @@ export default function RecipePage() {
     const directions = recipe.strInstructions
         ? recipe.strInstructions.split('.').filter(Boolean)
         : [];
+
+    const handleReviewChange = e => {
+        setNewReview({ ...newReview, [e.target.name]: e.target.value });
+    };
+
+    const handleReviewSubmit = e => {
+        e.preventDefault();
+        setReviewLoading(true);
+        fetch("http://localhost:5000/reviews", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+                user: newReview.user,
+                rating: parseInt(newReview.rating),
+                rev: newReview.rev
+            })
+        })
+            .then(res => res.json())
+            .then(() => {
+                setReviews([...reviews, { ...newReview, rating: parseInt(newReview.rating) }]);
+                setNewReview({ user: "", rating: "", rev: "" });
+                setReviewLoading(false);
+            });
+    };
 
     return (
         <div>
@@ -71,54 +105,31 @@ export default function RecipePage() {
                     {/* TO ADD: Favourite Icon */}
                 </div>
 
-                {/* INI AKU COMMENT SOALNYA TheMealDB gak ada cooktime, portions */}
-                <div className="text-xl font-bold flex items-center justify-center text-center gap-20 mb-2">
-                    <span>
-                        {/* {recipe.cooktime} Mins */}
-                    </span>
-                    <span>
-                        {/* {recipe.portions} Servings */}
-                        {/* <img src="../assets/icons/Portions.svg"
-                        alt="portions icon"> 
-                        <img>*/}
-                    </span>
-                    <span>
-                        {/* {averageRating} ★ */}
-                        {/* TO ADD: STARS ICON */}
-                    </span>
-                </div>
-                
-                {/* INI JUGAAA, TheMealDB gak ada desc (i need your opinions on these problems) */}
-                <p className="text-left text-l mb-4">
-                    {/* {recipe.description} */}
-                </p>
-
-                {/* BAGIAN INI NANTI TUNGGU PUNYA DIRAAAA SOALNYA BUTUH JSON REVIEW KAYAKNYA SIE*/}
                 {/* Reviews */}
-                {/*<div className="mt-6">
+                <div className="mt-6">
                     <div className="flex items-end justify-between mb-2">
                         <h2 className="text-xl font-bold">
-                            Reviews {/*({recipe.reviews.length})}
+                            Reviews ({reviews.length})
                         </h2>
-                        <Link to={`/recipe/${recipe.id}/reviews`} className="text-[12px] hover:underline">
+                        <Link to={`/recipe/${id}/reviews`} className="text-[12px] hover:underline">
                             See more
                         </Link>
                     </div>
                 
                     <div className="flex flex-col md:flex-row gap-4">
-                    {recipe.reviews.slice(0, 2).map((review, idx) => (
+                    {reviews.slice(0, 2).map((reviews, idx) => (
                         <div key={idx} className="bg-[#E85F5C] text-white rounded-lg p-4 flex-1 shadow">
                         <div className="flex justify-between items-center gap-2 mb-1">
-                            <span className="font-bold">{review.user}</span>
+                            <span className="font-bold">{reviews.user}</span>
                             <span className="font-semibold text-s">
-                            {review.rating} ★
+                            {reviews.rating} ★
                             </span>
                         </div>
-                        <p className="text-sm text-left">{review.comment}</p>
+                        <p className="text-sm text-left">{reviews.rev}</p>
                         </div>
                     ))}
                     </div>
-                </div> */}
+                </div>
 
             </div>
         </div>

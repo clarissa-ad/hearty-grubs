@@ -1,0 +1,6 @@
+[
+  { "user": "ILikeCooking", "rating": 5, "rev": "I tried this recipe and my family liked it!" },
+  { "user": "WarmRiceBowl", "rating": 4, "rev": "I think it's pretty good." },
+  { "user": "AlienLovingTangerine", "rating": 5, "rev": "Cooked this for my boyfriend and he loved it very much."},
+  { "user": "AngelBunny", "rating": 3, "rev": "It's so mid." }
+]
