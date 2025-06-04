@@ -28,9 +28,38 @@ export const HomeNSearch = () => {
 
     const fetchSearchMeals = async () => {
       try {
-        const res = await fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`);
-        const data = await res.json();
-        setRecipes(data.meals || []);
+        const [nameRes, ingRes] = await Promise.all([
+          fetch(`https://www.themealdb.com/api/json/v1/1/search.php?s=${encodeURIComponent(searchTerm)}`),
+          fetch(`https://www.themealdb.com/api/json/v1/1/filter.php?i=${encodeURIComponent(searchTerm)}`),
+        ]);
+
+        const nameData = await nameRes.json();
+        const ingData = await ingRes.json();
+
+        const nameMeals = nameData.meals || [];
+
+        let ingredientMeals = [];
+
+        if (ingData.meals && ingData.meals.length > 0) {
+          // Look up full info for each ingredient-based result
+          const detailedMeals = await Promise.all(
+            ingData.meals.map((meal) =>
+              fetch(`https://www.themealdb.com/api/json/v1/1/lookup.php?i=${meal.idMeal}`).then((res) => res.json())
+            )
+          );
+          ingredientMeals = detailedMeals.map((d) => d.meals[0]);
+        }
+
+        // Combine both and remove duplicates based on idMeal
+        const combined = [...nameMeals, ...ingredientMeals];
+        const uniqueMealsMap = new Map();
+        combined.forEach((meal) => {
+          if (!uniqueMealsMap.has(meal.idMeal)) {
+            uniqueMealsMap.set(meal.idMeal, meal);
+          }
+        });
+
+        setRecipes(Array.from(uniqueMealsMap.values()));
       } catch (err) {
         console.error("Failed to search meals", err);
       }
